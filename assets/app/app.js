@@ -1,13 +1,13 @@
  // Initialize Firebase
  var config = {
-    apiKey: "AIzaSyDqT1b88zOaaeew2D1j1yNDjMNVdyHQrAc",
-    authDomain: "flight-tracker-b1c2b.firebaseapp.com",
-    databaseURL: "https://flight-tracker-b1c2b.firebaseio.com",
-    projectId: "flight-tracker-b1c2b",
-    storageBucket: "flight-tracker-b1c2b.appspot.com",
-    messagingSenderId: "664708434965"
-  };
-  firebase.initializeApp(config);
+     apiKey: "AIzaSyDqT1b88zOaaeew2D1j1yNDjMNVdyHQrAc",
+     authDomain: "flight-tracker-b1c2b.firebaseapp.com",
+     databaseURL: "https://flight-tracker-b1c2b.firebaseio.com",
+     projectId: "flight-tracker-b1c2b",
+     storageBucket: "flight-tracker-b1c2b.appspot.com",
+     messagingSenderId: "664708434965"
+ };
+ firebase.initializeApp(config);
 
  // Create a variable to reference the database
  var database = firebase.database();
@@ -18,6 +18,37 @@
  var time = "";
  var landing = "";
  var minute = "";
+
+  // landing time
+  var landing = "";
+
+  // take off time
+  var time = "";
+
+  // First Time (pushed back 1 year to make sure it comes before current time)
+  var takeofftime = moment(time, "HH:mm").subtract(1, "years");
+  console.log(takeofftime);
+
+  // Current Time
+  var currentTime = moment();
+  console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+  // Difference between the times
+  var diffTime = moment().diff(moment(takeofftime), "minutes");
+  console.log("DIFFERENCE IN TIME: " + diffTime);
+
+//   // Time apart (remainder)
+//   var tRemainder = diffTime % tFrequency;
+//   console.log(tRemainder);
+
+//   // Minute Until Train
+//   var tMinutesTillTrain = tFrequency - tRemainder;
+//   console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+//   // Next Train
+//   var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+//   console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
 
  // Capture Button Click
  $("#add-flight").on("click", function (event) {
@@ -30,7 +61,7 @@
      destination = $("#destination-input").val().trim();
      time = $("#time-input").val().trim();
      landing = $("#landing-input").val().trim();
-    //  minute = $("#minute-input").val().trim();
+     //minute = "landing" - "time"
 
      // Code in the logic for storing and retrieving the most recent user.
      database.ref().push({
@@ -38,9 +69,10 @@
          destination: destination,
          time: time,
          landing: landing,
-        //  minute: minute,
+         minute: minute,
          dateAdded: firebase.database.ServerValue.TIMESTAMP
      });
+
  });
  // Firebase is always watching for changes to the data.
  // When changes occurs it will print them to console and html
@@ -54,18 +86,25 @@
      console.log(snapshot.val().destination);
      console.log(snapshot.val().time);
      console.log(snapshot.val().landing);
-    //  console.log(snapshot.val().minute);
+     console.log(snapshot.val().minute);
 
 
      // Change the HTML
-     $("#flight-display").append(snapshot.val().flight);
-     $("#desination-display").append(snapshot.val().destination);
-     $("#time-display").append(snapshot.val().time);
-     $("#landing-display").append(snapshot.val().landing);
-    //  $("#minute-display").text(snapshot.val().minute);
+     $("#flight-display").after(snapshot.val().flight);
+     $("#desination-display").after(snapshot.val().destination);
+     $("#time-display").after(snapshot.val().time);
+     $("#landing-display").after(snapshot.val().landing);
+     $("#minute-display").after(snapshot.val().minute);
 
      // Handle the errors
  }, function (errorObject) {
      console.log("Errors handled: " + errorObject.code);
  });
  // dataRef.ref().orderByChild("dataAdded").limitToLast(1).on('child_added", function(snapshot)
+
+ //  // Assumptions
+ //  var tFrequency = 3;
+
+ //  // Time is 3:30 AM
+ //  var firstTime =  time = $("#time-input").val().trim();
+ // console.log(firstTime;)
