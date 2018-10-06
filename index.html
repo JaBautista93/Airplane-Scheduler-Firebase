@@ -9,7 +9,7 @@
         crossorigin="anonymous"> </script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <title>Aircraft Scheduler</title>
 </head>
 
@@ -29,15 +29,26 @@
                         <div class="card-header">
                             Current Flights
                         </div>
-                        <div class="card-body" id="flight-status">
+                        <div class="card-body row" id="flight-status">
                             <table style="width:100%">
                                 <tr>
-                                    <th>Flight Number</th>
-                                    <th>Destination</th>
-                                    <th>Take Off Time</th>
-                                    <th>Landing Time</th>
-                                    <th>Minutes till Landing</th>
+                                    <div class="col-lg-2">
+                                        <th>Flight Number | </th>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <th>Destination | </th>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <th>Frequency (hours) | </th>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <th>Next Flight Arrival | </th>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <th>Minutes till Landing</th>
+                                    </div>
                                 </tr>
+                                
                                 <tr>
                                     <td>
                                         <h4 id="flight-display"></h4>
@@ -46,13 +57,13 @@
                                         <h4 id="desination-display"></h4>
                                     </td>
                                     <td>
-                                        <h4 id="time-display"></h4>
+                                        <h4 id="frequency-display"></h4>
                                     </td>
                                     <td>
-                                        <h4 id="landing-display"></h4>
+                                        <h4 id="nextarrival-display"></h4>
                                     </td>
                                     <td>
-                                        <h4 id="minute-display"></h4>
+                                        <h4 id="minuteaway-display"></h4>
                                     </td>
                                 </tr>
                             </table>
@@ -79,8 +90,8 @@
                         <input class="form-control" id="time-input" type="time">
                     </div>
                     <div class="form-group row">
-                        <label for="rate-input">Landing Time:</label>
-                        <input class="form-control" id="landing-input" type="time">
+                        <label for="rate-input">Frequency (Hours):</label>
+                        <input class="form-control" id="frequency-input" type="number">
                     </div>
                     <button class="btn btn-primary" id="add-flight" type="submit">Submit</button>
                 </form>
@@ -99,5 +110,4 @@
 </body>
 <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
 <script src="./assets/app/app.js"></script>
-
 </html>

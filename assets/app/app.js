@@ -15,39 +15,10 @@
  // Note remember to create these same variables in Firebase!
  var flight = "";
  var destination = "";
- var time = "";
- var landing = "";
+ var takeoff = "";
+ var frequency = "";
+ var nextflight = "";
  var minute = "";
-
-  // landing time
-  var landing = "";
-
-  // take off time
-  var time = "";
-
-  // First Time (pushed back 1 year to make sure it comes before current time)
-  var takeofftime = moment(time, "HH:mm").subtract(1, "years");
-  console.log(takeofftime);
-
-  // Current Time
-  var currentTime = moment();
-  console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-
-  // Difference between the times
-  var diffTime = moment().diff(moment(takeofftime), "minutes");
-  console.log("DIFFERENCE IN TIME: " + diffTime);
-
-//   // Time apart (remainder)
-//   var tRemainder = diffTime % tFrequency;
-//   console.log(tRemainder);
-
-//   // Minute Until Train
-//   var tMinutesTillTrain = tFrequency - tRemainder;
-//   console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
-
-//   // Next Train
-//   var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-//   console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
 
  // Capture Button Click
@@ -56,20 +27,27 @@
      event.preventDefault();
 
      // Get inputs
-
      flight = $("#flight-input").val().trim();
      destination = $("#destination-input").val().trim();
-     time = $("#time-input").val().trim();
-     landing = $("#landing-input").val().trim();
-     //minute = "landing" - "time"
+     takeoff = $("#time-input").val().trim();
+     frequency = $("#frequency-input").val().trim();
+
+
+     // Print the initial data to the console.
+     //console.log(snapshot.val());
+
+     // Log the value of the various properties
+    //  console.log(snapshot.val().flight);
+    //  console.log(snapshot.val().destination);
+    //  console.log(snapshot.val().takeoff);
+    //  console.log(snapshot.val().frequency);
 
      // Code in the logic for storing and retrieving the most recent user.
      database.ref().push({
          flight: flight,
          destination: destination,
-         time: time,
-         landing: landing,
-         minute: minute,
+         takeoff: takeoff,
+         frequency: frequency,
          dateAdded: firebase.database.ServerValue.TIMESTAMP
      });
 
@@ -78,33 +56,44 @@
  // When changes occurs it will print them to console and html
  database.ref().on("child_added", function (snapshot) {
 
-     // Print the initial data to the console.
-     console.log(snapshot.val());
-
-     // Log the value of the various properties
-     console.log(snapshot.val().flight);
-     console.log(snapshot.val().destination);
-     console.log(snapshot.val().time);
-     console.log(snapshot.val().landing);
-     console.log(snapshot.val().minute);
-
-
      // Change the HTML
      $("#flight-display").after(snapshot.val().flight);
      $("#desination-display").after(snapshot.val().destination);
-     $("#time-display").after(snapshot.val().time);
-     $("#landing-display").after(snapshot.val().landing);
-     $("#minute-display").after(snapshot.val().minute);
-
+     $("#frequency-display").after(snapshot.val().takeoff);
+    
+     
      // Handle the errors
  }, function (errorObject) {
      console.log("Errors handled: " + errorObject.code);
  });
- // dataRef.ref().orderByChild("dataAdded").limitToLast(1).on('child_added", function(snapshot)
-
- //  // Assumptions
- //  var tFrequency = 3;
-
- //  // Time is 3:30 AM
- //  var firstTime =  time = $("#time-input").val().trim();
- // console.log(firstTime;)
+ 
+ // Run  
+    time = $("#time-input").val().trim();
+    console.log(time)
+    frequency = $("#frequency-input").val().trim();
+    console.log(frequency)
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(time, "HH:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
+   
+    // Current Time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+   
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+   
+    // Time apart (remainder)
+    var tRemainder = diffTime % frequency;
+    console.log(tRemainder);
+   
+    // Minute Until flight
+    var tMinutesTillPlane = frequency - tRemainder;
+    console.log("MINUTES TILL FLIGHT: " + tMinutesTillPlane);
+    $("#minute-display").append(tMinutesTillPlane);
+   
+    // Next flight
+    var nextFlight = moment().add(tMinutesTillPlane, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextFlight).format("hh:mm"));
+    $("#nextarriaval-display").append(nextFlight);
