@@ -32,7 +32,7 @@
      takeoff = $("#time-input").val().trim();
      frequency = $("#frequency-input").val().trim();
 
-
+// So this kept causing an error, it just stopped worked at some point and I am not sure why I so took it out
      // Print the initial data to the console.
      //console.log(snapshot.val());
 
@@ -67,7 +67,9 @@
      console.log("Errors handled: " + errorObject.code);
  });
  
- // Run  
+ // This is how we should get the moment js but I am not sure why I am not getting the inputs to grab
+// the inputed number.  Everytime I try and put this inside the click event, it doesn't work, I thought about making two seperate events
+// but that doesn't seem right.  I will ask for help on the this.    
     time = $("#time-input").val().trim();
     console.log(time)
     frequency = $("#frequency-input").val().trim();
