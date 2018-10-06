@@ -19,7 +19,8 @@
  var frequency = "";
  var nextflight = "";
  var minute = "";
-
+ var tMinutesTillPlane = "";
+ var nextFlight = "";
 
  // Capture Button Click
  $("#add-flight").on("click", function (event) {
@@ -32,15 +33,48 @@
      takeoff = $("#time-input").val().trim();
      frequency = $("#frequency-input").val().trim();
 
-// So this kept causing an error, it just stopped worked at some point and I am not sure why I so took it out
+     time = $("#time-input").val().trim();
+     console.log(time)
+     frequency = $("#frequency-input").val().trim();
+     console.log(frequency)
+     // First Time (pushed back 1 year to make sure it comes before current time)
+     var firstTimeConverted = moment(time, "HH:mm").subtract(1, "years");
+     console.log(firstTimeConverted);
+
+     // Current Time
+     var currentTime = moment();
+     console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+     // Difference between the times
+     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+     console.log("DIFFERENCE IN TIME: " + diffTime);
+
+     // Time apart (remainder)
+     var tRemainder = diffTime % frequency;
+     console.log(tRemainder);
+
+     // Minute Until flight
+     tMinutesTillPlane = frequency - tRemainder;
+     console.log("MINUTES TILL FLIGHT: " + tMinutesTillPlane);
+
+     // Next flight
+     nextFlight = moment().add(tMinutesTillPlane, "minutes");
+     console.log("ARRIVAL TIME: " + moment(nextFlight).format("hh:mm"));
+
+
+
+     // So this kept causing an error, it just stopped worked at some point and I am not sure why I so took it out
      // Print the initial data to the console.
      //console.log(snapshot.val());
 
      // Log the value of the various properties
-    //  console.log(snapshot.val().flight);
-    //  console.log(snapshot.val().destination);
-    //  console.log(snapshot.val().takeoff);
-    //  console.log(snapshot.val().frequency);
+     //  console.log(snapshot.val().flight);
+     //  console.log(snapshot.val().destination);
+     //  console.log(snapshot.val().takeoff);
+     //  console.log(snapshot.val().frequency);
+     //  console.log(snapshot.val().tMinutesTillPlane);
+     //  console.log(snapshot.val().nextFlight);
+
 
      // Code in the logic for storing and retrieving the most recent user.
      database.ref().push({
@@ -48,6 +82,8 @@
          destination: destination,
          takeoff: takeoff,
          frequency: frequency,
+         tMinutesTillPlane: tMinutesTillPlane,
+         nextFlight: nextFlight,
          dateAdded: firebase.database.ServerValue.TIMESTAMP
      });
 
@@ -60,42 +96,11 @@
      $("#flight-display").after(snapshot.val().flight);
      $("#desination-display").after(snapshot.val().destination);
      $("#frequency-display").after(snapshot.val().takeoff);
-    
-     
+     $("#minute-display").append(tMinutesTillPlane);
+     $("#nextarriaval-display").append(nextFlight);
+
      // Handle the errors
  }, function (errorObject) {
      console.log("Errors handled: " + errorObject.code);
  });
- 
- // This is how we should get the moment js but I am not sure why I am not getting the inputs to grab
-// the inputed number.  Everytime I try and put this inside the click event, it doesn't work, I thought about making two seperate events
-// but that doesn't seem right.  I will ask for help on the this.    
-    time = $("#time-input").val().trim();
-    console.log(time)
-    frequency = $("#frequency-input").val().trim();
-    console.log(frequency)
-    // First Time (pushed back 1 year to make sure it comes before current time)
-    var firstTimeConverted = moment(time, "HH:mm").subtract(1, "years");
-    console.log(firstTimeConverted);
-   
-    // Current Time
-    var currentTime = moment();
-    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-   
-    // Difference between the times
-    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-    console.log("DIFFERENCE IN TIME: " + diffTime);
-   
-    // Time apart (remainder)
-    var tRemainder = diffTime % frequency;
-    console.log(tRemainder);
-   
-    // Minute Until flight
-    var tMinutesTillPlane = frequency - tRemainder;
-    console.log("MINUTES TILL FLIGHT: " + tMinutesTillPlane);
-    $("#minute-display").append(tMinutesTillPlane);
-   
-    // Next flight
-    var nextFlight = moment().add(tMinutesTillPlane, "minutes");
-    console.log("ARRIVAL TIME: " + moment(nextFlight).format("hh:mm"));
-    $("#nextarriaval-display").append(nextFlight);
+
