@@ -69,7 +69,7 @@ function snapshot() {
   $("#train-info-display > tbody").empty(),
 
     // displays the time
-    $("#timeDisplay").html(moment().format("llll")).css('color','aqua')
+    $("#timeDisplay").html(moment().format("llll")).css('color','black')
  
   dataRef.ref().on("child_added", function (childSnapshot) {
     console.log(childSnapshot.val());
